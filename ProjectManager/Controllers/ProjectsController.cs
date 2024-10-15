@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProjectManager.Data.Models;
+using ProjectManager.Services;
 
 namespace ProjectManager.Controllers
 {
@@ -8,39 +8,17 @@ namespace ProjectManager.Controllers
     [ApiController]
     public class ProjectsController : ControllerBase
     {
-        public static List<Project> projects = new List<Project>
+        private readonly IProjectService _projectService;
+        public ProjectsController(IProjectService projectService)
         {
-            new Project
-            {
-                 Id = 1,
-                 Name = "Nauka Programowania w C#",
-                 Description = "Projekt mający na celu naukę podstaw programowania w języku C#."
-            },
-            new Project
-            {
-                Id = 2,
-                Name = "Tworzenie i Zarządzanie Bazami Danych SQL",
-                Description = "Nauka baz danych SQL"
-            },
-            new Project
-            {
-                 Id = 3,
-                 Name = "Wprowadzenie do ASP.NET Core",
-                 Description = "Projekt mający na celu naukę tworzenia aplikacji webowych przy użyciu frameworka ASP.NET Core."
-            }
-        };
-
-        [HttpGet]
-        public ActionResult<List<Project>> GetAll()
-        {
-            return Ok(projects);
+            _projectService = projectService;
         }
 
-        [HttpPost]
-        public ActionResult Add(Project project)
+        [HttpGet]
+        public async Task<ActionResult<List<Project>>> GetAll()
         {
-            projects.Add(project);
-            return Ok();
+            var projects = await _projectService.GetAll();
+            return Ok(projects);
         }
     }
 }
