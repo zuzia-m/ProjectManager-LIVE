@@ -10,5 +10,12 @@ namespace ProjectManager.Data
         }
 
         public DbSet<Project> Projects { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Project>()
+                .Property(p => p.CreatedDate)
+                .HasDefaultValueSql("GETDATE()");
+        }
     }
 }

@@ -12,6 +12,13 @@ namespace ProjectManager.Repositories
             _context = context;
         }
 
+        public async Task<Project> Create(Project project)
+        {
+            await _context.Projects.AddAsync(project);
+            await _context.SaveChangesAsync();
+            return project;
+        }
+
         public async Task<List<Project>> GetAll()
         {
             var projects = await _context.Projects.ToListAsync();

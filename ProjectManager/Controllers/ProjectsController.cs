@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectManager.Data.Models;
+using ProjectManager.DTOs;
 using ProjectManager.Services;
 
 namespace ProjectManager.Controllers
@@ -15,10 +16,17 @@ namespace ProjectManager.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Project>>> GetAll()
+        public async Task<ActionResult<List<ProjectDto>>> GetAll()
         {
-            var projects = await _projectService.GetAll();
-            return Ok(projects);
+            var projectDtos = await _projectService.GetAll();
+            return Ok(projectDtos);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ProjectDto>> Create(CreateProjectDto createProjectDto)
+        {
+            var projectDto = await _projectService.Create(createProjectDto);
+            return Ok(projectDto);
         }
     }
 }
