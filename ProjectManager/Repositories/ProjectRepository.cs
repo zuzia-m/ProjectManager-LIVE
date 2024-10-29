@@ -42,7 +42,7 @@ namespace ProjectManager.Repositories
         {
             var existingProject = await _context.Projects.FindAsync(project.Id);
 
-            if (project is null)
+            if (existingProject is null)
             {
                 throw new NotFoundException($"Project with id {project.Id} does not exist.");
             }
