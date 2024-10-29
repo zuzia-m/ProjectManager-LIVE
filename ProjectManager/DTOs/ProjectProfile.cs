@@ -11,6 +11,8 @@ namespace ProjectManager.DTOs
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate.ToString("dd MMMM yyyy")));
 
             CreateMap<CreateProjectDto, Project>();        
+
+            CreateMap<UpdateProjectDto, Project>();
         }
     }
 }
