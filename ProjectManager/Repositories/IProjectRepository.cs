@@ -8,5 +8,6 @@ namespace ProjectManager.Repositories
         public Task<Project> GetById(int id);
         public Task<Project> Create(Project project);
         public Task<Project> Update(Project project);
+        public Task Delete(int id);
     }
 }

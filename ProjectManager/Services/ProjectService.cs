@@ -41,5 +41,10 @@ namespace ProjectManager.Services
             project = await _projectRepository.Update(project);
             return _mapper.Map<ProjectDto>(project);
         }
+
+        public Task Delete(int id)
+        {
+            return _projectRepository.Delete(id);
+        }
     }
 }

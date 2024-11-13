@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectManager.DTOs;
-using ProjectManager.Exceptions;
 using ProjectManager.Services;
 
 namespace ProjectManager.Controllers
@@ -25,15 +24,8 @@ namespace ProjectManager.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProjectDto>> GetById([FromRoute] int id)
         {
-            try
-            {
-                var project = await _projectService.GetById(id);
-                return Ok(project);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
+            var project = await _projectService.GetById(id);
+            return Ok(project);
         }
 
         [HttpPost]
@@ -46,15 +38,15 @@ namespace ProjectManager.Controllers
         [HttpPut]
         public async Task<ActionResult<ProjectDto>> Update([FromBody] UpdateProjectDto updateProjectDto)
         {
-            try
-            {
-                var projectDto = await _projectService.Update(updateProjectDto);
-                return Ok(projectDto);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
+            var projectDto = await _projectService.Update(updateProjectDto);
+            return Ok(projectDto);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete([FromRoute] int id)
+        {
+            await _projectService.Delete(id);
+            return NoContent();
         }
     }
 }

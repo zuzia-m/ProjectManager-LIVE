@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProjectManager.Data;
+using ProjectManager.Middleware;
 using ProjectManager.Repositories;
 using ProjectManager.Services;
 
@@ -19,6 +20,7 @@ builder.Services.AddDbContext<ProjectManagerDbContext>(options =>
 
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -34,6 +36,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 

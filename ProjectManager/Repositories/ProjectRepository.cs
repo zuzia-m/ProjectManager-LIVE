@@ -47,12 +47,27 @@ namespace ProjectManager.Repositories
                 throw new NotFoundException($"Project with id {project.Id} does not exist.");
             }
 
-            existingProject.Name = project.Name;
-            existingProject.Description = project.Description;
+            _context.Entry(existingProject).CurrentValues.SetValues(project);
+            _context.Entry(existingProject).Property(x => x.CreatedDate).IsModified = false;
+            // existingProject.Name = project.Name;
+            // existingProject.Description = project.Description;
 
             await _context.SaveChangesAsync();
 
             return existingProject;
+        }
+
+        public async Task Delete(int id)
+        {
+            var existingProject = await _context.Projects.FindAsync(id);
+
+            if (existingProject is null)
+            {
+                throw new NotFoundException($"Project with id {id} does not exist.");
+            }
+
+            _context.Remove(existingProject);
+            await _context.SaveChangesAsync();
         }
     }
 }
