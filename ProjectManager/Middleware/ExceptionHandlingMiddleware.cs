@@ -1,5 +1,6 @@
 ﻿
 using ProjectManager.Exceptions;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjectManager.Middleware
 {
@@ -17,6 +18,12 @@ namespace ProjectManager.Middleware
 				context.Response.StatusCode = 404;
 				await context.Response.WriteAsync(ex.Message);
 			}
+            catch (FluentValidation.ValidationException ex)
+            {
+                context.Response.ContentType = "text/plain";
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(ex.Message);
+            }
             catch (Exception)
             {
                 context.Response.ContentType = "text/plain";

@@ -1,5 +1,7 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using ProjectManager.Data;
+using ProjectManager.DTOs.Validation;
 using ProjectManager.Middleware;
 using ProjectManager.Repositories;
 using ProjectManager.Services;
@@ -17,6 +19,8 @@ builder.Services.AddDbContext<ProjectManagerDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddValidatorsFromAssemblyContaining<CreateProjectDtoValidator>();
 
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
