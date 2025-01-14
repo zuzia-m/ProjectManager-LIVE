@@ -16,6 +16,29 @@ namespace ProjectManager.Data
             modelBuilder.Entity<Project>()
                 .Property(p => p.CreatedDate)
                 .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<Project>()
+                .Property(p => p.Name)
+                .IsRequired(true)
+                .HasMaxLength(30);
+
+            modelBuilder.Entity<Project>()
+                .Property(p => p.Description)
+                .IsRequired(false)
+                .HasMaxLength(500);
+
+            // analogiczny sposób zapisu:
+            //modelBuilder.Entity<Project>(entity =>
+            //{
+            //    entity.Property(p => p.Name)
+            //        .IsRequired(true)
+            //        .HasMaxLength(30);
+            //    entity.Property(p => p.Description)
+            //        .HasMaxLength(500)
+            //        .IsRequired(false);
+            //    entity.Property(p => p.CreatedDate)
+            //        .HasDefaultValueSql("GETDATE()");
+            //});
         }
     }
 }
