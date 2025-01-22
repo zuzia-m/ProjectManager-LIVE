@@ -23,7 +23,9 @@ builder.Services.AddDbContext<ProjectManagerDbContext>(options =>
 builder.Services.AddValidatorsFromAssemblyContaining<CreateProjectDtoValidator>();
 
 builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IProjectTaskService, ProjectTaskService>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IProjectTaskRepository, ProjectTaskRepository>();
 builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

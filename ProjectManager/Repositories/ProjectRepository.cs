@@ -8,6 +8,7 @@ namespace ProjectManager.Repositories
     public class ProjectRepository : IProjectRepository
     {
         private readonly ProjectManagerDbContext _context;
+
         public ProjectRepository(ProjectManagerDbContext context)
         {
             _context = context;

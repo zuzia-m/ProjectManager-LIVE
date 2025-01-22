@@ -1,6 +1,4 @@
-﻿
-using ProjectManager.Exceptions;
-using System.ComponentModel.DataAnnotations;
+﻿using ProjectManager.Exceptions;
 
 namespace ProjectManager.Middleware
 {
@@ -8,16 +6,16 @@ namespace ProjectManager.Middleware
     {
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-			try
-			{
-				await next.Invoke(context);
-			}
-			catch (NotFoundException ex)
-			{
-				context.Response.ContentType = "text/plain";
-				context.Response.StatusCode = 404;
-				await context.Response.WriteAsync(ex.Message);
-			}
+            try
+            {
+                await next.Invoke(context);
+            }
+            catch (NotFoundException ex)
+            {
+                context.Response.ContentType = "text/plain";
+                context.Response.StatusCode = 404;
+                await context.Response.WriteAsync(ex.Message);
+            }
             catch (FluentValidation.ValidationException ex)
             {
                 context.Response.ContentType = "text/plain";

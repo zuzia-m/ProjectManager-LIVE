@@ -12,6 +12,7 @@ namespace ProjectManager.Controllers
         private readonly IProjectService _projectService;
         private readonly IValidator<CreateProjectDto> _createProjectDtoValidator;
         private readonly IValidator<UpdateProjectDto> _updateProjectDtoValidator;
+
         public ProjectsController(
             IProjectService projectService,
             IValidator<CreateProjectDto> createProjectDtoValidator,

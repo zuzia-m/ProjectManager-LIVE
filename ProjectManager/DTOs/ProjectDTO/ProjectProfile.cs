@@ -10,7 +10,7 @@ namespace ProjectManager.DTOs
             CreateMap<Project, ProjectDto>()
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate.ToString("dd MMMM yyyy")));
 
-            CreateMap<CreateProjectDto, Project>();        
+            CreateMap<CreateProjectDto, Project>();
 
             CreateMap<UpdateProjectDto, Project>();
         }

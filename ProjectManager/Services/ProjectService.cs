@@ -9,6 +9,7 @@ namespace ProjectManager.Services
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IMapper _mapper;
+
         public ProjectService(IProjectRepository projectRepository, IMapper mapper)
         {
             _projectRepository = projectRepository;
