@@ -34,7 +34,7 @@ namespace ProjectManager.Repositories
         public async Task<List<ProjectTask>> GetAll()
         {
             return await _context.ProjectTasks
-                .Include(pt => pt.Project)
+                //.Include(pt => pt.Project)
                 .ToListAsync();
         }
 

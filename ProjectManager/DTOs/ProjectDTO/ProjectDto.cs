@@ -1,4 +1,6 @@
-﻿namespace ProjectManager.DTOs
+﻿using ProjectManager.DTOs.ProjectTaskDTO;
+
+namespace ProjectManager.DTOs
 {
     public class ProjectDto
     {
@@ -6,5 +8,6 @@
         public string Name { get; set; }
         public string Description { get; set; }
         public string CreatedDate { get; set; }
+        public List<ProjectTaskDto> ProjectTasks { get; set; }
     }
 }

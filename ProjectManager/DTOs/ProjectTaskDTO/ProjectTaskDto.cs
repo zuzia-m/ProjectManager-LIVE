@@ -8,6 +8,5 @@
         public DateTime DueDate { get; set; }
         public bool IsCompleted { get; set; }
         public int ProjectId { get; set; }
-        public ProjectDto Project { get; set; }
     }
 }
