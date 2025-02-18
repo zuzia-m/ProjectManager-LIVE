@@ -31,10 +31,30 @@ namespace ProjectManager.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<ProjectTask>> GetAll()
+        public async Task<List<ProjectTask>> GetAll(string? searchText, DateTime? dueDate, bool? isCompleted)
         {
-            return await _context.ProjectTasks
-                //.Include(pt => pt.Project)
+            var query = _context.ProjectTasks.AsQueryable();
+
+            // Wyszukiwanie po tytule lub opisie
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                query = query.Where(pt => pt.Title.Contains(searchText.ToLower()) || pt.Description.Contains(searchText.ToLower()));
+            }
+
+            // Filtrowanie po dacie
+            if (dueDate.HasValue)
+            {
+                query = query.Where(pt => pt.DueDate <= dueDate);
+            }
+
+            // Filtrowanie po statusie ukończenia
+            if (isCompleted.HasValue)
+            {
+                query = query.Where(pt => pt.IsCompleted == isCompleted);
+            }
+
+            return await query
+                .Include(pt => pt.Project)
                 .ToListAsync();
         }
 

@@ -27,9 +27,13 @@ namespace ProjectManager.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ProjectTaskDto>>> GetAll()
+        public async Task<ActionResult<List<ProjectTaskDto>>> GetAll(
+            [FromQuery] string? searchText,
+            [FromQuery] DateTime? dueDate,
+            [FromQuery] bool? isCompleted
+            )
         {
-            var projectTasks = await _projectTaskService.GetAll();
+            var projectTasks = await _projectTaskService.GetAll(searchText, dueDate, isCompleted);
             return Ok(projectTasks);
         }
 
@@ -48,7 +52,7 @@ namespace ProjectManager.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProjectTaskDto>> Add(CreateProjectTaskDto createProjectTaskDto)
+        public async Task<ActionResult<ProjectTaskDto>> Add([FromBody] CreateProjectTaskDto createProjectTaskDto)
         {
             _createProjectTaskDtoValidator.ValidateAndThrow(createProjectTaskDto);
             var projectTask = await _projectTaskService.Add(createProjectTaskDto);
@@ -56,7 +60,7 @@ namespace ProjectManager.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<ProjectTaskDto>> Update(UpdateProjectTaskDto updateProjectTaskDto)
+        public async Task<ActionResult<ProjectTaskDto>> Update([FromBody] UpdateProjectTaskDto updateProjectTaskDto)
         {
             _updateProjectTaskDtoValidator.ValidateAndThrow(updateProjectTaskDto);
             var projectTask = await _projectTaskService.Update(updateProjectTaskDto);
@@ -64,7 +68,7 @@ namespace ProjectManager.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete([FromRoute] int id)
         {
             await _projectTaskService.Delete(id);
             return NoContent();
