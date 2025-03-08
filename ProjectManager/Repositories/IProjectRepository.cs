@@ -4,7 +4,7 @@ namespace ProjectManager.Repositories
 {
     public interface IProjectRepository
     {
-        public Task<List<Project>> GetAll();
+        public Task<List<Project>> GetAll(string? searchText, string? sortBy, string? sortDirection);
 
         public Task<Project> GetById(int id);
 
