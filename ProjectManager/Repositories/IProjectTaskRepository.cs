@@ -4,7 +4,7 @@ namespace ProjectManager.Repositories
 {
     public interface IProjectTaskRepository
     {
-        public Task<List<ProjectTask>> GetAll(string? searchText, DateTime? dueDate, bool? isCompleted);
+        public Task<List<ProjectTask>> GetAll(string? searchText, DateTime? dueDate, bool? isCompleted, string? sortBy, string? sortDirection);
         public Task<ProjectTask?> GetById(int id);
         public Task<List<ProjectTask>> GetByProjectId(int projectId);
         public Task<ProjectTask> Add(ProjectTask projectTask);

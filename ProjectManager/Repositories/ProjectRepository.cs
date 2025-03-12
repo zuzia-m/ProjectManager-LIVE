@@ -26,6 +26,7 @@ namespace ProjectManager.Repositories
             // Sortowanie
             if (!string.IsNullOrEmpty(sortDirection))
             {
+               // sortDirection = string.IsNullOrEmpty(sortDirection) ? "asc" : sortDirection; 
                 sortBy = string.IsNullOrEmpty(sortBy) ? "" : sortBy;
 
                 switch (sortBy.ToLower())

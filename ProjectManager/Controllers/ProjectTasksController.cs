@@ -30,10 +30,12 @@ namespace ProjectManager.Controllers
         public async Task<ActionResult<List<ProjectTaskDto>>> GetAll(
             [FromQuery] string? searchText,
             [FromQuery] DateTime? dueDate,
-            [FromQuery] bool? isCompleted
+            [FromQuery] bool? isCompleted,
+            [FromQuery] string? sortBy,
+            [FromQuery] string? sortDirection
             )
         {
-            var projectTasks = await _projectTaskService.GetAll(searchText, dueDate, isCompleted);
+            var projectTasks = await _projectTaskService.GetAll(searchText, dueDate, isCompleted, sortBy, sortDirection);
             return Ok(projectTasks);
         }
 

@@ -31,7 +31,7 @@ namespace ProjectManager.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<ProjectTask>> GetAll(string? searchText, DateTime? dueDate, bool? isCompleted)
+        public async Task<List<ProjectTask>> GetAll(string? searchText, DateTime? dueDate, bool? isCompleted, string? sortBy, string? sortDirection)
         {
             var query = _context.ProjectTasks.AsQueryable();
 
@@ -53,9 +53,31 @@ namespace ProjectManager.Repositories
                 query = query.Where(pt => pt.IsCompleted == isCompleted);
             }
 
+            if (!string.IsNullOrEmpty(sortDirection))
+            {
+                // sortDirection = string.IsNullOrEmpty(sortDirection) ? "asc" : sortDirection; 
+                sortBy = string.IsNullOrEmpty(sortBy) ? "" : sortBy;
+
+                switch (sortBy.ToLower())
+                {
+                    case "title":
+                        query = sortDirection.ToLower() == "asc" ? query.OrderBy(t => t.Title) : query.OrderByDescending(t => t.Title);
+                        break;
+                    case "duedate":
+                        query = sortDirection.ToLower() == "asc" ? query.OrderBy(t => t.DueDate) : query.OrderByDescending(t => t.DueDate);
+                        break;
+                    case "iscompleted":
+                        query = sortDirection.ToLower() == "asc" ? query.OrderBy(t => t.IsCompleted) : query.OrderByDescending(t => t.IsCompleted);
+                        break;
+                    default:
+                        query = sortDirection.ToLower() == "asc" ? query.OrderBy(t => t.Id) : query.OrderByDescending(t => t.Id);
+                        break;
+                }
+            }
+
             return await query
-                .Include(pt => pt.Project)
-                .ToListAsync();
+            .Include(pt => pt.Project)
+            .ToListAsync();
         }
 
         public async Task<ProjectTask?> GetById(int id)

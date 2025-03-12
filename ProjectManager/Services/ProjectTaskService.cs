@@ -15,9 +15,9 @@ namespace ProjectManager.Services
             _mapper = mapper;
         }
 
-        public async Task<List<ProjectTaskDto>> GetAll(string? searchText, DateTime? dueDate, bool? isCompleted)
+        public async Task<List<ProjectTaskDto>> GetAll(string? searchText, DateTime? dueDate, bool? isCompleted, string? sortBy, string? sortDirection)
         {
-            var projectTasks = await _projectTaskRepository.GetAll(searchText, dueDate, isCompleted);
+            var projectTasks = await _projectTaskRepository.GetAll(searchText, dueDate, isCompleted, sortBy, sortDirection);
             return _mapper.Map<List<ProjectTaskDto>>(projectTasks);
         }
 
