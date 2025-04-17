@@ -7,6 +7,7 @@ using Moq;
 using ProjectManager.DTOs;
 using ProjectManager.Exceptions;
 using ProjectManager.Services;
+using System.Net;
 using System.Net.Http.Json;
 
 namespace ProjectManager_LIVE.Tests.IntegrationTests
@@ -40,7 +41,7 @@ namespace ProjectManager_LIVE.Tests.IntegrationTests
             var response = await client.GetAsync("/api/projects");
 
             //assert
-             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         }
 
         [Fact]
@@ -73,7 +74,7 @@ namespace ProjectManager_LIVE.Tests.IntegrationTests
 
             // act
             var response = await client.GetAsync($"/api/projects/{id}");
-            var projectDto = await response.Content.ReadFromJsonAsync<ProjectDto>(); 
+            var projectDto = await response.Content.ReadFromJsonAsync<ProjectDto>();
 
             //assert
             response.Should().NotBeNull();
@@ -81,6 +82,89 @@ namespace ProjectManager_LIVE.Tests.IntegrationTests
             projectDto.Should().NotBeNull();
             projectDto.Name.Should().Be(name);
             projectDto.Description.Should().Be(description);
+        }
+
+        [Fact]
+        public async Task Create_ForValidProject_ShouldReturn200Ok()
+        {
+            // arrange
+            var client = _factory.CreateClient();
+
+            var createProjectDto = new CreateProjectDto
+            {
+                Name = "New Project",
+                Description = "New Description"
+            };
+
+            var createdProjectDto = new ProjectDto
+            {
+                Id = 1,
+                Name = createProjectDto.Name,
+                Description = createProjectDto.Description
+            };
+
+            _projectServiceMock.Setup(p => p.Create(It.IsAny<CreateProjectDto>()))
+                .ReturnsAsync(createdProjectDto);
+
+            // act
+            var response = await client.PostAsJsonAsync("/api/projects", createProjectDto);
+            var projectDto = await response.Content.ReadFromJsonAsync<ProjectDto>();
+
+            //assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            projectDto.Should().NotBeNull();
+            projectDto.Name.Should().Be(createProjectDto.Name);
+        }
+
+        [Fact]
+        public async Task Update_ForValidProject_ShouldReturn200Ok()
+        {
+            // arrange
+            var client = _factory.CreateClient();
+
+            var updateProjectDto = new UpdateProjectDto
+            {
+                Id = 1,
+                Name = "Updated Project",
+                Description = "Updated Description"
+            };
+
+            var updatedProjectDto = new ProjectDto
+            {
+                Id = updateProjectDto.Id,
+                Name = updateProjectDto.Name,
+                Description = updateProjectDto.Description
+            };
+
+            _projectServiceMock.Setup(p => p.Update(It.IsAny<UpdateProjectDto>()))
+                .ReturnsAsync(updatedProjectDto);
+
+            // act
+            var response = await client.PutAsJsonAsync("/api/projects", updateProjectDto);
+            var projectDto = await response.Content.ReadFromJsonAsync<ProjectDto>();
+
+            // assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            projectDto.Should().NotBeNull();
+            projectDto.Name.Should().Be(updateProjectDto.Name);
+        }
+
+        [Fact]
+        public async Task Delete_ForExistingId_ShouldReturn204NoContent()
+        {
+            // arrange
+            var id = 1;
+
+            _projectServiceMock.Setup(p => p.Delete(id))
+                .Returns(Task.CompletedTask);
+
+            var client = _factory.CreateClient();
+
+            // act
+            var response = await client.DeleteAsync($"/api/projects/{id}");
+
+            // assert
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
     }
 }
