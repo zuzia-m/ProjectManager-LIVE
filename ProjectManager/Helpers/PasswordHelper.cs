@@ -14,5 +14,10 @@ namespace ProjectManager.Helpers
                 return (Convert.ToBase64String(hash), Convert.ToBase64String(salt));
             }
         }
+
+        public static bool VerifyPassword(string enteredPassword, string storedHash, string storedSalt)
+        {
+
+        }
     }
 }

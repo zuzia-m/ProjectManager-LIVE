@@ -15,6 +15,17 @@ namespace ProjectManager.Services
                 _userRepository = userRepository;
         }
 
+        public async Task<User?> Authenticate(string username, string password)
+        {
+            var user = await _userRepository.GetUserByUsername(username);
+            if (user == null || !PasswordHelper.VerifyPassword(password, user.PasswordHash, user.PasswordSalt))
+            {
+                return null;
+            }
+
+            return user;
+        }
+
         public async Task<User?> RegisterUser(RegisterUserDto registerUserDto)
         {
             if (await _userRepository.GetUserByEmail(registerUserDto.Email) != null)

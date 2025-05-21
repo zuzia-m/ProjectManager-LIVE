@@ -27,5 +27,15 @@ namespace ProjectManager.Controllers
 
             return Ok(new { message = $"User {user.Username} successfully created" });
         }
+
+        [HttpPost("login")]
+        public async Task<ActionResult> Login([FromBody] LoginDto loginDto)
+        {
+            var user = await _authService.Authenticate(loginDto.Username, loginDto.Password);
+            if (user is null) return Unauthorized(new { message = $"Invalid username or password." });
+
+            //Generate JWT Token
+            return Ok(); // return Token
+        }
     }
 }
