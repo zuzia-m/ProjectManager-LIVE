@@ -1,22 +1,32 @@
-﻿using ProjectManager.Data.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjectManager.Data;
+using ProjectManager.Data.Models;
 
 namespace ProjectManager.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        public Task<User> AddUser(User user)
+        private readonly ProjectManagerDbContext _context;
+        public UserRepository(ProjectManagerDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        
+        public async Task<User> AddUser(User user)
+        {
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+            return user;
         }
 
-        public Task<User?> GetUserByEmail(string email)
+        public async Task<User?> GetUserByEmail(string email)
         {
-            throw new NotImplementedException();
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public Task<User?> GetUserByUsername(string username)
+        public async Task<User?> GetUserByUsername(string username)
         {
-            throw new NotImplementedException();
+            return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
         }
     }
 }

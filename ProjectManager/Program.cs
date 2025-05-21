@@ -22,6 +22,8 @@ builder.Services.AddDbContext<ProjectManagerDbContext>(options =>
 
 builder.Services.AddValidatorsFromAssemblyContaining<CreateProjectDtoValidator>();
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IProjectTaskService, ProjectTaskService>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
